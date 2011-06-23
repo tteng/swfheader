@@ -38,10 +38,21 @@ This will print the following to stdout::
      Compression: uncompressed
      Dimensions: 550.0 x 400.0
      Bounding box: (0.0, 550.0, 0.0, 400.0)
-     Frames: 3072
-     FPS: 1
+     FPS: 12
+     Frames: 1
 
 The exact values will naturally depend on the particular SWF file.
+
+This Project is forked from https://github.com/dokai/swfheader, and did two modifications:
+
+   1, fixed get the wrong fps and frames bug
+   2, add a linux shell wraper for easy usage, first I convert the erlang result into a json style string, then wrap all params by the shell
+
+      $ ./swfheader.sh test.swf
+
+you will get the follwing to stdout:
+   {'Version': 9, 'Compression': compressed, 'Width': 640.0, 'Height': 480.0, 'BoundingBox': (0.0, 640.0, 0.0, 480.0), 'Fps': 24.0, 'Frames': 1}
+so you can easily catch the result and parse it by other language.
 
 License
 =======

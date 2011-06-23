@@ -18,17 +18,20 @@ print_header(Filename) ->
      bbox, {xmin, Xmin, xmax, Xmax, ymin, Ymin, ymax, Ymax},
      frames, Frames,
      fps, Fps} = parse(Filename),
-    io:format("Version: ~p~n", [Version]),
-    io:format("Compression: ~p~n", [Compression]),
-    io:format("Dimensions: ~p x ~p~n", [Width, Height]),
-    io:format("Bounding box: (~p, ~p, ~p, ~p)~n", [Xmin, Xmax, Ymin, Ymax]),
-    io:format("Frames: ~p~n", [Frames]),
-    io:format("FPS: ~p~n", [Fps]).
+    io:format("{'Version': ~p, 'Compression': ~p, 'Width': ~p, 'Height': ~p, 'BoundingBox': (~p, ~p, ~p, ~p), 'Fps': ~p, 'Frames': ~p} ~n", 
+              [Version, Compression, Width, Height, Xmin, Xmax, Ymin, Ymax, Fps, Frames]).
+
+%    io:format("Version: ~p~n", [Version]),
+%    io:format("Compression: ~p~n", [Compression]),
+%    io:format("Dimensions: ~p x ~p~n", [Width, Height]),
+%    io:format("Bounding box: (~p, ~p, ~p, ~p)~n", [Xmin, Xmax, Ymin, Ymax]),
+%    io:format("Frames: ~p~n", [Frames]),
+%    io:format("FPS: ~p~n", [Fps]).
 
 parse(Filename) ->
     {ok, Swf} = file:read_file(Filename),
     {Compression, Version, _, Payload} = parse_signature(Swf),
-    {Xmin, Xmax, Ymin, Ymax, Frames, Fps} = parse_payload(Payload),
+    {Xmin, Xmax, Ymin, Ymax, Fps, Frames} = parse_payload(Payload),
     {version, Version,
      compression, Compression,
      width, Xmax-Xmin,
@@ -54,8 +57,8 @@ parse_payload(Payload) ->
       Ymin:Nbits/big-signed,
       Ymax:Nbits/big-signed,
       _:ByteAlign,
-      Frames:16/little-unsigned,
       Fps:16/little-unsigned,
+      Frames:16/little-unsigned,
       _/binary>> = Payload,
     % Convert the RECT values from Twips to pixels
-    {Xmin / 20, Xmax / 20, Ymin / 20, Ymax / 20, Frames, Fps}.
+    {Xmin / 20, Xmax / 20, Ymin / 20, Ymax / 20, Fps / 256, Frames}.
