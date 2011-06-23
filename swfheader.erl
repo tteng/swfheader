@@ -18,7 +18,7 @@ print_header(Filename) ->
      bbox, {xmin, Xmin, xmax, Xmax, ymin, Ymin, ymax, Ymax},
      frames, Frames,
      fps, Fps} = parse(Filename),
-    io:format("{'Version': ~p, 'Compression': ~p, 'Width': ~p, 'Height': ~p, 'BoundingBox': (~p, ~p, ~p, ~p), 'Fps': ~p, 'Frames': ~p} ~n", 
+    io:format("{\"Version\": \"~p\", \"Compression\": \"~p\", \"Width\": \"~p\", \"Height\": \"~p\", \"BoundingBox\": \"(~p, ~p, ~p, ~p)\", \"Fps\": \"~p\", \"Frames\": \"~p\"} ~n", 
               [Version, Compression, Width, Height, Xmin, Xmax, Ymin, Ymax, Fps, Frames]).
 
 %    io:format("Version: ~p~n", [Version]),
